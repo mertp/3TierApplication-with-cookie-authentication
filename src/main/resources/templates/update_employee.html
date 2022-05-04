@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
+    <style>
+        label {
+            display: block;
+            float: left;
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+<div class="container text-center">
+    <h1>UPDATE EMPLOYEE</h1>
+    <div id="form-div" class="d-flex justify-content-center text-start">
+        <div id=border class="my-5 border rounded py-3 px-3">
+            <form action="#" th:action="@{/saveEmployee}" th:object="${employee}" method="post">
+                <label for="empno">EMPNO</label>
+                <input type="text" th:field="*{empno}" id="empno" placeholder="Id">
+                <br>
+                <label for="name">NAME</label>
+                <input type="text" th:field="*{ename}" id="name" placeholder="Name">
+                <br>
+                <label for="job">JOB</label>
+                <input type="text" th:field="*{job}" id="job" placeholder="Job">
+                <br>
+                <label for="salary">SALARY</label>
+                <input type="text" th:field="*{sal}" id="salary" placeholder="Salary">
+                <br>
+                <label for="date">HIRING DATE</label>
+                <input type="text" th:field="*{hiredate}" id="date" placeholder="date">
+                <br><br>
+                <label for="mgr">MGR</label>
+                <input type="text" th:field="*{mgr}" id="mgr" placeholder="Mgr">
+                <br>
+                <label for="deptno">DEPTNP</label>
+                <input type="text" th:field="*{deptno}" id="deptno" placeholder="Deptno">
+                <br>
+                <label for="commission">COMM</label>
+                <input type="text" th:field="*{comm}" id="commission" placeholder="Commission">
+                <br><br>
+                <input type="submit" class="btn btn-primary" value="Update">
+                <hr>
+                <a th:href="@{/}" class="btn btn-danger btn-sm">Discard Changes</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
