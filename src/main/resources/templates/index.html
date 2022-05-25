@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <style>
+        #logout {
+            margin-left: auto;
+        }
+    </style>
+    <title>Employees</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Employee System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <form th:action="@{/search}" method="get">
+                <input type="text" name="keyword" th:value="${keyword}"  placeholder="Find by Name and Job" size="50" >
+                <button type="submit" class="btn btn-primary" id="searchbutton" >Search</button>
+                <button type="submit" class="btn btn-secondary" >Reset</button>
+            </form>
+            <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/dept">Departmens</a>
+            <a class="nav-item nav-link" href="/bonus">Bonus</a>
+            <a class="nav-item nav-link " href="/salgrade">Salary Grades</a>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+
+    function EmptyList() {
+
+        if ($('#Table1 tr').length == 0) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'There are no employees matching your input',
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+            })
+            console.log("if")
+        }
+    }
+</script>
+<div class="col d-flex justify-content-center">
+    <div class="card" style="width: 50%;">
+        <!-- MODAL PLACEHOLDER -->
+        <div id="modalPlaceHolder"></div>
+
+        <div class="card-body">
+            <h5 class="card-title">Employees</h5>
+            <div class="card float-end">
+                <a href="#" th:onclick="Add()" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Employee</a>
+            </div>
+            <table class="table table-striped" id="">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>JOB</th>
+                    <th>MGR</th>
+                    <th>HIREDATE</th>
+                    <th>SAL</th>
+                    <th>COMM</th>
+                    <th>DEPTNO</th>
+                    <th colspan="2" style="text-align: center;">Operations</th>
+                </tr>
+                </thead>
+                <tbody id="table_body">
+                <div id="error_message"></div>
+                <tr th:each="e : ${eList}"th:field="${e}">
+                    <td th:text="${e.empno}"></td>
+                    <td id="queryword" th:text="${e.ename}"></td>
+                    <td th:text="${e.job}"></td>
+                    <td th:text="${e.mgr}"></td>
+                    <td th:text="${e.hiredate}"></td>
+                    <td th:text="${e.comm}"></td>
+                    <td th:text="${e.deptno}"></td>
+                    <td><a th:href="@{/update/{id}(id=${e.empno})}" class="btn btn-primary btn-sm">Update</a></td>
+                    <td><a th:href="@{/delete/{id}(id=${e.empno})}" class="btn btn-danger btn-sm">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+
+<script>
+    function Add() {
+        $.ajax({
+            method: 'GET',
+            url: "/addemployee",
+            success: function (data) {
+                $('#modalPlaceHolder').html(data);
+                $('#modalPlaceHolder').find('.modal').modal("show");
+            },
+            error: function (response) {
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+    }
+    // function Update(id) {
+    //     //alert(id);
+    //     $.ajax({
+    //         method: 'GET  ',
+    //         url: "updateemployee",
+    //         data: {"id": id},
+    //         success: function (data) {
+    //             $('#modalPlaceHolder').html(data);
+    //             $('#modalPlaceHolder').find('.modal').modal('show');
+    //         },
+    //         error: function (response) {
+    //             alert("Message: " + r.Message);
+    //             alert("StackTrace: " + r.StackTrace);
+    //             alert("ExceptionType: " + r.ExceptionType);
+    //         }
+    //     });
+    // }
+const element=document.getElementById("searchbutton");
+document.addEventListener("keypress",function (event){
+    if(event.key=="Enter"){
+        element.click();
+        console.log(document.getElementsByTagName("td").length);
+    }
+    });
+
+
+</script>
+</body>
+</html>
